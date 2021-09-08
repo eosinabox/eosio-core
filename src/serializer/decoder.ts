@@ -88,7 +88,7 @@ export function abiDecode(args: UntypedDecodeArgs | BuiltinDecodeArgs<any> | Typ
             const synthesized = synthesizeABI(type)
             abi = synthesized.abi
             customTypes.push(...synthesized.types)
-        } catch (error) {
+        } catch (error: any) {
             throw Error(
                 `Unable to synthesize ABI for: ${typeName} (${error.message}). ` +
                     'To decode non-class types you need to pass the ABI definition manually.'
@@ -125,8 +125,12 @@ export function abiDecode(args: UntypedDecodeArgs | BuiltinDecodeArgs<any> | Typ
         } else {
             throw new Error('Nothing to decode, you must set one of data, json, object')
         }
-    } catch (error) {
-        throw new DecodingError(ctx, error)
+    } catch (error: any) {
+        if (error instanceof Error) {
+            throw new DecodingError(ctx, error)
+        } else {
+            throw new Error('Unknown error thrown in decoder, something wrong with args.data?')
+        }
     }
 }
 

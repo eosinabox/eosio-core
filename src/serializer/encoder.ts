@@ -141,7 +141,11 @@ export function abiEncode(args: EncodeArgs): Bytes {
     try {
         encodeAny(args.object, rootType, ctx)
     } catch (error) {
-        throw new EncodingError(ctx, error)
+        if (error instanceof Error) {
+            throw new EncodingError(ctx, error)
+        } else {
+            throw new Error('Unknown error thrown in encoder, something wrong with args.metadata?')
+        }
     }
     return Bytes.from(encoder.getData())
 }

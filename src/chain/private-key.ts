@@ -40,7 +40,7 @@ export class PrivateKey {
         try {
             const {type, data} = decodeKey(string)
             return new this(type, data)
-        } catch (error) {
+        } catch (error: any) {
             error.message = `Invalid private key (${error.message})`
             if (
                 ignoreChecksumError &&

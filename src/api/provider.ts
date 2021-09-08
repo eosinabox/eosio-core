@@ -48,7 +48,7 @@ export class FetchProvider implements APIProvider {
         })
         try {
             return response.json()
-        } catch (error) {
+        } catch (error: any) {
             if (!response.ok) {
                 throw Error(`HTTP ${response.status}: ${response.statusText}`)
             }
