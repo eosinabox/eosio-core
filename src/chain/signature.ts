@@ -63,6 +63,7 @@ export class Signature implements ABISerializableObject {
         if (type === CurveType.WA) {
             // same as with public keys WA type has some extra data tacked on
             const data = new Bytes(decoder.readArray(65)) // sig
+            console.log('AMIHDEBUG [eosio-core][signature.ts][fromABI][curveType==WA]', data);
             Bytes.fromABI(decoder) // throw away for now
             Bytes.fromABI(decoder)
             return new Signature(CurveType.WA, data)
@@ -111,9 +112,11 @@ export class Signature implements ABISerializableObject {
 
     /** @internal */
     toABI(encoder: ABIEncoder) {
-        if (this.type === CurveType.WA) {
-            throw new Error('WA signatures are not supported yet')
-        }
+        // let's support this curve type
+        // if (this.type === CurveType.WA) {
+        //     throw new Error('WA signatures are not supported yet')
+        // }
+        console.log('AMIHDEBUG [eosio-core][signature.ts][toABI] curve type:', this.type)
         encoder.writeByte(CurveType.indexFor(this.type))
         encoder.writeArray(this.data.array)
     }

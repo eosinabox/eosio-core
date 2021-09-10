@@ -53,6 +53,7 @@ export class PublicKey implements ABISerializableObject {
             // "WA" keys pack some sort of metadata
             // we probably need to restructure key data storage into containers like FC does
             const data = new Bytes(decoder.readArray(33))
+            console.log('AMIHDEBUG [eosio-core][public-key][fromABI] data:', data)
             Bytes.fromABI(decoder) // throw away metadata for now
             return new PublicKey(type, data)
         }
@@ -88,9 +89,11 @@ export class PublicKey implements ABISerializableObject {
 
     /** @internal */
     toABI(encoder: ABIEncoder) {
-        if (this.type === CurveType.WA) {
-            throw new Error('WA keys are not supported yet')
-        }
+        // let's support this curve type
+        // if (this.type === CurveType.WA) {
+        //     throw new Error('WA keys are not supported yet')
+        // }
+        console.log('AMIHDEBUG [eosio-core][public-key.ts][toABI] curve type:', this.type)
         encoder.writeByte(CurveType.indexFor(this.type))
         encoder.writeArray(this.data.array)
     }
